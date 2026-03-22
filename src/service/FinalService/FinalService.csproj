@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Application\Application\Application.csproj" />
+        <ProjectReference Include="..\Configuration\Configuration.Client\Configuration.Client.csproj" />
+        <ProjectReference Include="..\Configuration\Configuration.Provider\Configuration.Provider.csproj" />
+        <ProjectReference Include="..\Infrastructure\Infrastructure.Persistence\Infrastructure.Persistence.csproj" />
+        <ProjectReference Include="..\Presentation\Presentation.Grpc\Presentation.Grpc.csproj" />
+        <ProjectReference Include="..\Presentation\Presentation.Kafka\Presentation.Kafka.csproj" />
+    </ItemGroup>
+
+</Project>

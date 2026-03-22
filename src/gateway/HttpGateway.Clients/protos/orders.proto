@@ -1,0 +1,124 @@
+syntax = "proto3";
+package grpc.orders;
+option csharp_namespace = "Orders.Contracts";
+
+import "google/protobuf/timestamp.proto";
+
+service MainOrderService {
+    rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+    rpc AddProductInOrder(AddProductInOrderRequest) returns (AddProductInOrderResponse);
+    rpc DeleteProductFromOrder(DeleteProductFromOrderRequest) returns (DeleteProductFromOrderResponse);
+    rpc ExecutionOrder(ExecutionOrderRequest) returns (ExecutionOrderResponse);
+    rpc CompletedOrder(CompletedOrderRequest) returns (CompletedOrderResponse);
+    rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+    rpc SearchOrderHistory(SearchOrderHistoryRequest) returns (SearchOrderHistoryResponse);
+}
+
+
+enum OrderStateGrpc {
+    ORDER_STATE_GRPC_UNSPECIFIED = 0;
+    ORDER_STATE_GRPC_CREATED = 1;
+    ORDER_STATE_GRPC_PROCESSING = 2;
+    ORDER_STATE_GRPC_COMPLETED = 3;
+    ORDER_STATE_GRPC_CANCELLED = 4;
+}
+
+enum OrderHistoryItemKindGrpc {
+    ORDER_HISTORY_ITEM_KIND_GRPC_UNSPECIFIED = 0;
+    ORDER_HISTORY_ITEM_KIND_GRPC_CREATED = 1;
+    ORDER_HISTORY_ITEM_KIND_GRPC_ITEM_ADDED = 2;
+    ORDER_HISTORY_ITEM_KIND_GRPC_ITEM_REMOVED = 3;
+    ORDER_HISTORY_ITEM_KIND_GRPC_STATE_CHANGED = 4;
+}
+
+
+message HistoryCreatedPayloadGrpc {
+    string created_by = 1;
+}
+message HistoryItemAddedPayloadGrpc {
+    int64 product_id = 1;
+    int32 quantity = 2;
+}
+message HistoryItemRemovedPayloadGrpc {
+    int64 order_item_id = 1;
+}
+message HistoryStateChangedPayloadGrpc {
+    OrderStateGrpc from_state = 1;
+    OrderStateGrpc to_state = 2;
+}
+message HistoryProcessingStateChangedPayloadGrpc{
+    string from_state = 1;
+    string to_state = 2;
+}
+
+
+message OrderHistoryItem {
+    int64 order_history_item_id = 1;
+    int64 order_id = 2;
+    google.protobuf.Timestamp created_at = 3;
+    OrderHistoryItemKindGrpc order_history_item_kind = 4;
+    oneof payload {
+        HistoryCreatedPayloadGrpc created_grpc = 10;
+        HistoryItemAddedPayloadGrpc added_grpc = 11;
+        HistoryItemRemovedPayloadGrpc removed_grpc = 12;
+        HistoryStateChangedPayloadGrpc state_changed_grpc = 13;
+        HistoryProcessingStateChangedPayloadGrpc processing_state_changed_grpc = 14;
+    }
+}
+
+
+message CreateOrderRequest {
+    string created_by = 1;
+}
+message CreateOrderResponse {
+    int64 order_id = 1;
+}
+
+
+message AddProductInOrderRequest {
+    int64 order_id = 1;
+    int64 product_id = 2;
+    int32 quantity = 3;
+}
+message AddProductInOrderResponse {
+    int64 order_item_id = 1;
+}
+
+
+message DeleteProductFromOrderRequest {
+    int64 order_id = 1;
+    int64 product_id = 2;
+}
+message DeleteProductFromOrderResponse {
+}
+
+
+message ExecutionOrderRequest {
+    int64 order_id = 1;
+}
+message ExecutionOrderResponse {
+}
+
+
+message CompletedOrderRequest {
+    int64 order_id = 1;
+}
+message CompletedOrderResponse {
+}
+
+
+message CancelOrderRequest {
+    int64 order_id = 1;
+}
+message CancelOrderResponse {
+}
+
+
+message SearchOrderHistoryRequest {
+    int64 order_id = 1;
+    int32 page_number = 2;
+    int32 page_size = 3;
+}
+message SearchOrderHistoryResponse {
+    repeated OrderHistoryItem items = 1;
+}

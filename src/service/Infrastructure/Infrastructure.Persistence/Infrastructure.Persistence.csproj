@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentMigrator" />
+        <PackageReference Include="FluentMigrator.Runner" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+        <PackageReference Include="Npgsql" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Application\Application.Abstractions\Application.Abstractions.csproj" />
+        <ProjectReference Include="..\..\Application\Application.Exceptions\Application.Exceptions.csproj" />
+
+    </ItemGroup>
+
+</Project>
